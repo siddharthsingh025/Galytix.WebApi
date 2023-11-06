@@ -66,6 +66,26 @@
               "target": "Package",
               "version": "[5.0.0, )"
             },
+            "Microsoft.TestPlatform.CommunicationUtilities": {
+              "target": "Package",
+              "version": "[17.7.2-release-23423-01, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.12.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "NuGet.Frameworks": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
             "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",
               "version": "[5.6.3, )"

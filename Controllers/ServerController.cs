@@ -22,37 +22,37 @@ namespace Galytix.WebApi.Controllers
         private const string FilePath = "Data/gwpByCountry.csv";
 
         private async Task<List<GwpData>> ReadCsvDataAsync()
+{
+    var lines = await System.IO.File.ReadAllLinesAsync(FilePath);
+    var data = new List<GwpData>();
+
+    var headers = lines[0].Split(',');
+    for (int i = 1; i < lines.Length; i++)
+    {
+        var values = lines[i].Split(',');
+
+        for (int j = 4; j < values.Length; j++)
         {
-            var lines = await System.IO.File.ReadAllLinesAsync(FilePath);
-            var data = new List<GwpData>();
-
-            var headers = lines[0].Split(',');
-            for (int i = 1; i < lines.Length; i++)
+            if (!string.IsNullOrEmpty(values[j]) && decimal.TryParse(values[j], out decimal gwpValue))
             {
-                var values = lines[i].Split(',');
-
-                for (int j = 4; j < values.Length; j++)
+                var gwpData = new GwpData
                 {
-                    if (!string.IsNullOrEmpty(values[j]) && decimal.TryParse(values[j], out decimal gwpValue))
-                    {
-                        var gwpData = new GwpData
-                        {
-                            CountryCode = values[0],
-                            LineOfBusiness = values[3],
-                            Year = headers[j],
-                            Gwp = gwpValue
-                        };
-                        data.Add(gwpData);
-                    }
-                    else
-                    {
-                        // loggs
-                        System.Diagnostics.Debug.WriteLine($"Unable to parse {values[j]} at line {i}, column {j}.");
-                    }
-                }
+                    CountryCode = values[0],
+                    LineOfBusiness = values[3],
+                    Year = headers[j],
+                    Gwp = gwpValue
+                };
+                data.Add(gwpData);
             }
-            return data;
+            else
+            {
+                // logs
+                System.Diagnostics.Debug.WriteLine($"Unable to parse {values[j]} at line {i}, column {j}.");
+            }
         }
+    }
+    return data;
+}
 
         [HttpPost("avg")]
         public async Task<ActionResult<Dictionary<string, decimal>>> GetAverageGwpByLobAsync([FromBody] GwpRequest request)
